@@ -270,11 +270,15 @@ Output:
   
 # Problems Solved
 
-| Problem No. | Problem Name | Difficulty |
-|-------------|--------------|------------|
-| 1757 | Recyclable and Low Fat Products | Easy |
-| ... | More problems coming soon... | |
+# Problems Solved
 
+| # | Problem | Difficulty | Status |
+|---|---------|------------|--------|
+| 1757 | Recyclable and Low Fat Products | Easy | ✅ |
+| 584 | Find Customer Referee | Easy | ✅ |
+| 595 | Big Countries | Easy | ✅ |
+| 1148 | Article Views I | Easy | ✅ |
+| 1683 | Invalid Tweets | Easy | ✅ |
 ---
 
 Happy Learning! 🚀
