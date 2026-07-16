@@ -134,6 +134,140 @@ With indexes:
 
 ---
 
+# Handling NULL Values
+
+`NULL` represents a missing or unknown value in a database.
+
+---
+
+## Check for NULL Values
+
+Use `IS NULL`.
+
+```sql
+SELECT *
+FROM Employees
+WHERE manager_id IS NULL;
+```
+
+This returns all employees whose `manager_id` is missing.
+
+---
+
+## Check for NOT NULL Values
+
+Use `IS NOT NULL`.
+
+```sql
+SELECT *
+FROM Employees
+WHERE manager_id IS NOT NULL;
+```
+
+This returns all employees who have a manager.
+
+---
+
+## ❌ Incorrect Way
+
+```sql
+SELECT *
+FROM Employees
+WHERE manager_id = NULL;
+```
+
+This will **not** return any rows.
+
+Similarly,
+
+```sql
+SELECT *
+FROM Employees
+WHERE manager_id != NULL;
+```
+
+is also incorrect.
+
+---
+
+## ✅ Correct Way
+
+```sql
+WHERE column_name IS NULL
+```
+
+```sql
+WHERE column_name IS NOT NULL
+```
+
+---
+
+## Replace NULL Values
+
+### MySQL
+
+Use `IFNULL()`.
+
+```sql
+SELECT employee_name,
+       IFNULL(manager_id, 0) AS manager_id
+FROM Employees;
+```
+
+If `manager_id` is `NULL`, it displays `0`.
+
+---
+
+### Standard SQL
+
+Use `COALESCE()`.
+
+```sql
+SELECT employee_name,
+       COALESCE(manager_id, 0) AS manager_id
+FROM Employees;
+```
+
+`COALESCE()` returns the first non-NULL value.
+
+---
+
+## Example
+
+Table:
+
+| employee_id | manager_id |
+|-------------|------------|
+| 1 | NULL |
+| 2 | 5 |
+| 3 | NULL |
+
+Query:
+
+```sql
+SELECT *
+FROM Employees
+WHERE manager_id IS NULL;
+```
+
+Output:
+
+| employee_id | manager_id |
+|-------------|------------|
+| 1 | NULL |
+| 3 | NULL |
+
+---
+
+## Notes
+
+- `NULL` is **not** equal to `0`.
+- `NULL` is **not** an empty string (`''`).
+- `NULL` means the value is unknown or missing.
+- Always use `IS NULL` or `IS NOT NULL` for comparisons.
+- Use `IFNULL()` (MySQL) or `COALESCE()` to replace `NULL` values.
+
+  
 # Problems Solved
 
 | Problem No. | Problem Name | Difficulty |
