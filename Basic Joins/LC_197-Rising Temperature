@@ -1,0 +1,25 @@
+# Rising Temperature
+
+## Problem Type
+Self JOIN
+
+## What I Learned
+
+- Joined the Weather table with itself.
+- Compared today's temperature with yesterday's.
+- Used date difference while joining.
+
+## Pattern
+
+Need to compare rows from the same table.
+
+Use:
+SELF JOIN
+
+## Difficulty
+
+Easy
+
+##Solution
+
+select t.id from Weather w  join Weather t on datediff(t.recordDate,w.recordDate)=1 where t.temperature>w.temperature;
