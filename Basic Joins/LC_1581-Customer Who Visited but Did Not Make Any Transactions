@@ -1,0 +1,33 @@
+# Customer Who Visited but Did Not Make Any Transactions
+
+## Problem Type
+LEFT JOIN + NULL
+
+## What I Learned
+
+- LEFT JOIN keeps all visits.
+- Visits without transactions have NULL values.
+- Filtered unmatched rows using IS NULL.
+- Used GROUP BY to count visits for each customer.
+
+## Pattern
+
+Need records that do not have a matching record.
+
+Use:
+LEFT JOIN
+WHERE joined_table.column IS NULL
+
+## Difficulty
+
+Easy
+
+##Solution
+
+SELECT 
+    v.customer_id, 
+    COUNT(v.visit_id) AS count_no_trans
+FROM Visits v
+LEFT JOIN Transactions t ON v.visit_id = t.visit_id
+WHERE t.transaction_id IS NULL
+GROUP BY v.customer_id;
