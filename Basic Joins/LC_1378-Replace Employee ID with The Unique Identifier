@@ -1,0 +1,24 @@
+# Replace Employee ID With The Unique Identifier
+
+## Problem Type
+Basic LEFT JOIN
+
+## What I Learned
+
+- LEFT JOIN keeps all rows from the Employee table.
+- Missing matching rows produce NULL values.
+- Used LEFT JOIN because every employee should appear in the output.
+
+## Pattern
+
+Need all records from one table even if matching data doesn't exist.
+
+Use:
+LEFT JOIN
+
+## Difficulty
+
+Easy
+##Solution
+
+SELECT EU.UNIQUE_ID , E.NAME FROM EMPLOYEES E LEFT JOIN EMPLOYEEUNI EU ON E.ID=EU.ID;
