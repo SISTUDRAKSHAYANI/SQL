@@ -20,7 +20,13 @@ INNER JOIN
 
 Easy
 
-##Solution
+## Solution
+
 ```mysql
-SELECT P.PRODUCT_NAME,S.YEAR,S.PRICE FROM SALES S INNER JOIN PRODUCT P ON S.PRODUCT_ID = P.PRODUCT_ID;
+SELECT P.product_name,
+       S.year,
+       S.price
+FROM Sales S
+INNER JOIN Product P
+ON S.product_id = P.product_id;
 ```
