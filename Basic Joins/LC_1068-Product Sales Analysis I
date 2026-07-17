@@ -1,0 +1,25 @@
+# Product Sales Analysis I
+
+## Problem Type
+Basic INNER JOIN
+
+## What I Learned
+
+- INNER JOIN returns only matching rows.
+- Used to combine information from Product and Sales tables.
+- Matching key was product_id.
+
+## Pattern
+
+Need only matching records from both tables.
+
+Use:
+INNER JOIN
+
+## Difficulty
+
+Easy
+
+##Solution
+
+SELECT P.PRODUCT_NAME,S.YEAR,S.PRICE FROM SALES S INNER JOIN PRODUCT P ON S.PRODUCT_ID = P.PRODUCT_ID;
