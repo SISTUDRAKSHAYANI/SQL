@@ -1,0 +1,33 @@
+# LeetCode 577 - Employee Bonus
+
+## Problem
+Write a query to report the name and bonus amount of each employee whose bonus is less than 1000 or who did not receive a bonus.
+
+## Approach
+- Use a `LEFT JOIN` to combine the `Employee` and `Bonus` tables.
+- A `LEFT JOIN` ensures that employees without a bonus are also included in the result.
+- Apply the filtering condition:
+  - `bonus < 1000` → Employees whose bonus is less than 1000.
+  - `bonus IS NULL` → Employees who have not received any bonus.
+- Return the employee's name and bonus.
+
+## SQL Concepts Used
+- LEFT JOIN
+- Filtering with `WHERE`
+- Handling missing values using `IS NULL`
+- Conditional filtering with `OR`
+
+## Query
+```sql
+SELECT e.name, b.bonus
+FROM Employee e
+LEFT JOIN Bonus b
+ON e.empId = b.empId
+WHERE b.bonus < 1000
+   OR b.bonus IS NULL;
+```
+
+## Key Learning
+- Use `LEFT JOIN` when you need all records from the left table, even if matching records do not exist in the right table.
+- `NULL` values cannot be compared using `=`. Always use `IS NULL` or `IS NOT NULL`.
+- Combining conditions with `OR` helps include multiple categories of rows in a single query.
