@@ -1,0 +1,70 @@
+# LeetCode 1280 – Students and Examinations
+
+## 📝 Problem Summary
+
+Given three tables:
+
+* **Students** – Contains student IDs and names.
+* **Subjects** – Contains all available subjects.
+* **Examinations** – Contains records of students attending subject exams.
+
+Return the number of times each student attended each subject examination. Every student should appear with every subject, even if they never attended that subject's exam.
+
+---
+
+## 💡 Approach
+
+* Use a **CROSS JOIN** between `Students` and `Subjects` to generate every possible student-subject combination.
+* Use a **LEFT JOIN** with the `Examinations` table to keep combinations where no exam record exists.
+* Count the number of matching examination records using `COUNT()`.
+* Group by student and subject.
+* Sort the result by `student_id` and `subject_name`.
+
+---
+
+## 🧠 SQL Concepts Used
+
+* `CROSS JOIN`
+* `LEFT JOIN`
+* `GROUP BY`
+* `COUNT()`
+* `ORDER BY`
+
+---
+
+## 📚 Pattern Learned
+
+**Pattern:** Generate all possible combinations and count matching records.
+
+**Observation:** A `CROSS JOIN` creates every student-subject pair. A `LEFT JOIN` ensures combinations with no matching exam records are still included.
+
+**Action:** Use `COUNT(examinations.subject_name)` after grouping to count only existing exam records. Missing records automatically result in a count of `0`.
+
+**Reason:** This pattern is useful whenever you need to show all possible combinations and include zero occurrences for missing data.
+
+---
+
+## ⏱️ Complexity
+
+* **Time Complexity:** O(S × U + E)
+
+  * `S` = Number of students
+  * `U` = Number of subjects
+  * `E` = Number of examination records
+* **Space Complexity:** O(1) (excluding the output)
+
+
+## Solution
+
+SELECT 
+    s.student_id, 
+    s.student_name, 
+    sub.subject_name, 
+    COUNT(e.student_id) AS attended_exams
+FROM Students s
+CROSS JOIN Subjects sub
+LEFT JOIN Examinations e 
+    ON s.student_id = e.student_id 
+    AND sub.subject_name = e.subject_name
+GROUP BY s.student_id, sub.subject_name
+ORDER BY s.student_id, sub.subject_name;
