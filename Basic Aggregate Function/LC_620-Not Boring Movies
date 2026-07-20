@@ -1,0 +1,53 @@
+
+
+---
+
+# LeetCode 620 - Not Boring Movies
+
+## Problem
+
+Retrieve all movies that:
+
+* Have an **odd `id`**.
+* Have a **description other than `"boring"`**.
+* Return the results ordered by **rating in descending order**.
+
+## Approach
+
+* Use the `WHERE` clause to filter:
+
+  * `id % 2 = 1` to select only odd IDs.
+  * `description <> 'boring'` to exclude boring movies.
+* Sort the filtered records using `ORDER BY rating DESC`.
+
+## SQL Concepts Used
+
+* `WHERE`
+* Modulo Operator (`%`)
+* Comparison Operator (`<>`)
+* `ORDER BY DESC`
+
+## Complexity
+
+* **Time Complexity:** `O(n)` (scans all rows once)
+* **Space Complexity:** `O(1)` (excluding the output)
+
+## Solution
+
+```sql
+SELECT *
+FROM Cinema
+WHERE id % 2 = 1
+  AND description <> 'boring'
+ORDER BY rating DESC;
+```
+
+### Key Takeaway
+
+* Use the **modulo operator (`%`)** to identify odd or even numbers.
+* Use **`<>`** (or `!=` in some SQL dialects) for "not equal to" comparisons.
+* Apply filtering before sorting to return only the required rows.
+
+---
+
+This format matches the style of a DSA/SQL GitHub repository and clearly documents what you learned from the problem.
