@@ -1,0 +1,56 @@
+
+---
+
+## 💡 Approach
+
+* Started with the `Prices` table to ensure every product appears in the output, even if it has no sales.
+* Used a **LEFT JOIN** with `UnitsSold` on `product_id` and matched each sale to the correct price using the purchase date range.
+* Calculated the **weighted average selling price** using:
+
+  * **Total Revenue** = `SUM(units × price)`
+  * **Total Units Sold** = `SUM(units)`
+* Rounded the result to **2 decimal places**.
+* Used `IFNULL()` to return **0** for products that have no sales records.
+
+### Key SQL Concepts Used
+
+* `LEFT JOIN`
+* `BETWEEN`
+* `GROUP BY`
+* `SUM()`
+* `ROUND()`
+* `IFNULL()`
+* Weighted Average
+
+### Time Complexity
+
+* **O(n + m)**, where:
+
+  * `n` = number of rows in `Prices`
+  * `m` = number of rows in `UnitsSold`
+
+### Learning Outcome
+
+* Learned the difference between a **simple average** and a **weighted average**.
+* Understood how to handle `NULL` values after a `LEFT JOIN`.
+* Reinforced the use of aggregate functions with joins.
+
+---
+
+I really like adding the **Learning Outcome** section. When you look back at your GitHub after a few months, you'll remember **what concept each problem taught you**, not just the SQL query.
+
+###Solution
+
+SELECT 
+    p.product_id,
+    IFNULL(ROUND(SUM(u.units * p.price) / SUM(u.units), 2), 0) AS average_price
+FROM 
+    Prices p
+LEFT JOIN 
+    UnitsSold u 
+ON 
+    p.product_id = u.product_id 
+    AND u.purchase_date BETWEEN p.start_date AND p.end_date
+GROUP BY 
+    p.product_id;
+
