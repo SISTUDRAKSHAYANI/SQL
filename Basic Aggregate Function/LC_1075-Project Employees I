@@ -1,0 +1,33 @@
+# LeetCode 1075 - Project Employees I
+
+## Approach
+- Join the `Project` and `Employee` tables using `employee_id`.
+- Group the records by `project_id`.
+- Calculate the average experience of employees working on each project using `AVG()`.
+- Round the result to 2 decimal places using `ROUND()`.
+
+## SQL Concepts Used
+- INNER JOIN
+- GROUP BY
+- AVG()
+- ROUND()
+
+## Complexity
+- Time Complexity: O(n)
+- Space Complexity: O(1) (excluding query result)
+
+## Pattern Learned
+When a problem asks for an average after combining data from multiple tables:
+1. Join the required tables.
+2. Group by the required column.
+3. Use `AVG()` to calculate the average.
+4. Use `ROUND()` if the output requires a specific number of decimal places.
+
+## Solution
+
+SELECT p.project_id,
+       ROUND(AVG(e.experience_years), 2) AS average_years
+FROM Project p
+JOIN Employee e
+ON p.employee_id = e.employee_id
+GROUP BY p.project_id;
