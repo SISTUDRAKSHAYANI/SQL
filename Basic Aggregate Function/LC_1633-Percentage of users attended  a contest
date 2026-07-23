@@ -1,0 +1,49 @@
+
+
+---
+
+## 📝 LeetCode 1633 - Percentage of Users Attended a Contest
+
+### 📌 Approach
+
+* Group the `register` table by `contest_id` to count how many users registered for each contest.
+
+* Use a subquery to find the total number of users from the `users` table.
+
+* Calculate the attendance percentage using:
+
+  `registered_users × 100 / total_users`
+
+* Round the result to **2 decimal places**.
+
+* Sort the output by:
+
+  1. `percentage` in **descending** order.
+  2. `contest_id` in **ascending** order when percentages are equal.
+
+### 💡 Key Learning
+
+Initially, I tried solving the problem using a `LEFT JOIN` between the `register` and `users` tables. However, I realized that counting `u.user_id` after grouping by `contest_id` only counts the users who registered for that contest, not the total number of users.
+
+The correct approach is to use:
+
+```sql
+(SELECT COUNT(*) FROM Users)
+```
+
+as the denominator, since the percentage should be calculated using the **total number of users** in the system. After this observation, the `JOIN` became unnecessary because no columns from the `users` table were needed.
+
+### 🧠 SQL Concepts Practiced
+
+* `GROUP BY`
+* Aggregate Functions (`COUNT`)
+* Scalar Subquery
+* `ROUND()`
+* `ORDER BY`
+
+---
+
+### Solution
+
+
+select contest_id , round((count(user_id)*100/(select count(*) from users)),2) as percentage from register group by contest_id order by percentage desc , contest_id asc;
