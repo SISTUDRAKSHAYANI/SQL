@@ -1,0 +1,71 @@
+
+
+# LeetCode 1211 - Queries Quality and Percentage
+
+## Problem
+
+Given a table `Queries`, calculate for each `query_name`:
+
+* **quality** = Average of `(rating / position)`, rounded to 2 decimal places.
+* **poor_query_percentage** = Percentage of queries where `rating < 3`, rounded to 2 decimal places.
+
+Return the result for every `query_name`.
+
+---
+
+## Approach
+
+1. Group all records by `query_name`.
+2. Calculate the average quality using:
+
+   * `AVG(rating / position)`
+3. Count poor queries using:
+
+   * `SUM(rating < 3)`
+   * In MySQL, the expression `rating < 3` evaluates to:
+
+     * `1` if true
+     * `0` if false
+4. Compute the percentage of poor queries:
+
+   * `(SUM(rating < 3) * 100) / COUNT(*)`
+5. Use `ROUND(..., 2)` to display values with two decimal places.
+
+---
+
+## SQL Concepts Used
+
+* `GROUP BY`
+* `AVG()`
+* `SUM()`
+* `COUNT()`
+* Boolean expressions (`rating < 3`)
+* `ROUND()`
+* Arithmetic operations
+
+---
+
+## Complexity Analysis
+
+* **Time Complexity:** `O(n)`
+  (Each row is processed once.)
+
+* **Space Complexity:** `O(k)`
+  (`k` = number of distinct `query_name` values.)
+
+---
+
+### Pattern Learned
+
+When calculating percentages in MySQL, a boolean expression like `rating < 3` can be directly used inside `SUM()` because **True = 1** and **False = 0**. This provides a concise way to count matching rows without using `CASE WHEN`.
+
+---
+
+## Solution
+
+SELECT
+    query_name,
+    ROUND(AVG(rating / position), 2) AS quality,
+    ROUND(SUM(rating < 3) * 100 / COUNT(*), 2) AS poor_query_percentage
+FROM Queries
+GROUP BY query_name;
