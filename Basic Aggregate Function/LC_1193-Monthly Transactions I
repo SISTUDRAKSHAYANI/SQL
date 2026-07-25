@@ -1,0 +1,41 @@
+## Approach
+
+This problem demonstrates **conditional aggregation** in SQL using `COUNT()` and `SUM()` along with `CASE` expressions.
+
+### Steps
+
+1. Format the transaction date to `YYYY-MM` using `DATE_FORMAT()` so transactions are grouped by month.
+2. Group the records by **month** and **country**.
+3. Use `COUNT(*)` to calculate the total number of transactions.
+4. Use `COUNT(CASE WHEN state = 'approved' THEN 1 END)` to count only approved transactions. `COUNT()` ignores `NULL`, so only approved rows are counted.
+5. Use `SUM(amount)` to calculate the total transaction amount.
+6. Use `SUM(CASE WHEN state = 'approved' THEN amount ELSE 0 END)` to calculate the total amount of approved transactions.
+
+### SQL Concepts Used
+
+* `DATE_FORMAT()`
+* `GROUP BY`
+* `COUNT()`
+* `SUM()`
+* `CASE WHEN`
+* Conditional Aggregation
+* Column Aliases (`AS`)
+
+
+### Solution
+
+# Write your MySQL query statement below
+select 
+date_format(trans_date,'%Y-%m') as month,
+country,
+count(*) as trans_count , 
+count(CASE
+        WHEN state = 'approved' THEN 1
+        
+    END) as approved_count,
+sum(amount) as trans_total_amount,
+SUM(CASE
+        WHEN state = 'approved' THEN amount
+        ELSE 0
+    END) as approved_total_amount
+from Transactions group by month, country;
