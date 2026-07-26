@@ -1,0 +1,35 @@
+## 💡 Approach
+
+The goal is to find the names of managers who have **at least 5 direct reports**.
+
+### Steps:
+1. Perform a **self join** on the `Employee` table:
+   - Treat one instance as employees.
+   - Treat the other instance as managers.
+2. Match each employee with their manager using:
+   - `employee.managerId = manager.id`
+3. Group the results by the manager's `id` and `name`.
+4. Count the number of employees reporting to each manager using `COUNT()`.
+5. Filter managers with **5 or more** direct reports using the `HAVING` clause.
+6. Return the manager names.
+
+### SQL Concepts Used
+- Self Join
+- `GROUP BY`
+- `COUNT()`
+- `HAVING`
+
+### Time Complexity
+- **O(n)**
+
+### Space Complexity
+- **O(n)** (for grouping the managers)
+
+###Solution
+
+SELECT e.name
+FROM Employee e
+JOIN Employee m
+ON e.id = m.managerId
+GROUP BY e.id, e.name
+HAVING COUNT(m.managerId) >= 5;
