@@ -1,0 +1,36 @@
+## 💡 Approach
+
+The goal is to calculate the percentage of customers whose **first order** was delivered on their preferred delivery date.
+
+### Steps:
+1. Find the first order date for each customer using `MIN(order_date)` and `GROUP BY customer_id`.
+2. Filter the `Delivery` table to keep only those first orders.
+3. Use a `CASE` statement to mark immediate deliveries:
+   - `1` if `order_date = customer_pref_delivery_date`
+   - `0` otherwise.
+4. Calculate the ratio of immediate deliveries to total first orders using `SUM()` and `COUNT(*)`.
+5. Round the result to 4 decimal places and multiply by `100` to get the percentage.
+
+### SQL Concepts Used
+- `GROUP BY`
+- `MIN()`
+- Row-value comparison with `IN`
+- `CASE WHEN`
+- `SUM()`
+- `COUNT()`
+- `ROUND()`
+
+### Time Complexity
+- **O(n)**
+
+### Space Complexity
+- **O(n)** (for the grouped result returned by the subquery)
+
+### Solution 
+
+select 
+(ROUND (sum(CASE WHEN order_date=customer_pref_delivery_date THEN 1 ELSE 0 END) / count(*) , 4) * 100) as immediate_percentage
+ from Delivery 
+ where (customer_id, order_date) in (select customer_id, min(order_date) 
+ from Delivery 
+ group by customer_id);
