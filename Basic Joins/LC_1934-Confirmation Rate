@@ -1,0 +1,41 @@
+## 💡 Approach
+
+The goal is to calculate the **confirmation rate** for each user.
+
+The confirmation rate is defined as:
+
+> Number of confirmed actions / Total number of confirmation requests
+
+If a user has **no confirmation requests**, their confirmation rate should be `0.00`.
+
+### Steps:
+1. Start with the `Signups` table to ensure every user appears in the result.
+2. Perform a `LEFT JOIN` with the `Confirmations` table using `user_id`.
+3. Use a `CASE` statement to count only the rows where `action = 'confirmed'`.
+4. Divide the number of confirmed actions by the total number of confirmation requests using `COUNT()`.
+5. Handle users with no confirmation requests by returning `0`.
+6. Round the result to **2 decimal places** using `ROUND()`.
+
+### SQL Concepts Used
+- `LEFT JOIN`
+- `CASE WHEN`
+- `SUM()`
+- `COUNT()`
+- `GROUP BY`
+- `ROUND()`
+- `IFNULL()` / `COALESCE()` (to handle `NULL` values)
+
+### Time Complexity
+- **O(n + m)**
+
+### Space Complexity
+- **O(n)** (for grouping the results)
+
+###Solution
+
+SELECT 
+    Signups.user_id, 
+    IFNULL(ROUND(AVG(Confirmations.action = 'confirmed'), 2), 0) AS confirmation_rate
+FROM Signups
+LEFT JOIN Confirmations USING(user_id)
+GROUP BY Signups.user_id;
