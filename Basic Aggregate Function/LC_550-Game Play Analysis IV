@@ -1,0 +1,50 @@
+# Game Play Analysis IV (LeetCode 550)
+
+## Problem Summary
+
+Calculate the fraction of players who logged in again exactly one day after their first login.
+
+## Approach
+
+* Used a **Common Table Expression (CTE)** to find each player's first login date using `MIN(event_date)`.
+* Joined the CTE back with the `Activity` table on `player_id`.
+* Used `DATE_ADD()` to check whether a player logged in exactly one day after their first login.
+* Counted only **distinct players** who satisfied the condition.
+* Divided by the total number of distinct players and rounded the result to two decimal places.
+
+## SQL Concepts Used
+
+* Common Table Expressions (CTEs)
+* Aggregate Functions (`MIN`)
+* `GROUP BY`
+* `JOIN`
+* `DATE_ADD()`
+* `COUNT(DISTINCT ...)`
+* `ROUND()`
+
+## Time Complexity
+
+* **O(n)**
+
+## Space Complexity
+
+* **O(p)**, where `p` is the number of distinct players stored in the CTE.
+
+## Key Learning
+
+This problem demonstrates how to combine aggregation with a CTE and a JOIN to compare each player's activity with their first login date. It also reinforces the importance of using `COUNT(DISTINCT ...)` when the question asks for the number of unique entities rather than the number of rows.
+
+## Solution
+
+WITH first_login AS (
+    SELECT player_id, MIN(event_date) AS first_date
+    FROM Activity
+    GROUP BY player_id
+)
+SELECT 
+    ROUND(COUNT(DISTINCT a.player_id) / (SELECT COUNT(DISTINCT player_id) FROM Activity), 2) AS fraction
+FROM first_login f
+JOIN Activity a
+  ON f.player_id = a.player_id
+  AND a.event_date = DATE_ADD(f.first_date, INTERVAL 1 DAY);
+
