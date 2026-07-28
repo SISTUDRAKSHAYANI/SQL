@@ -1,0 +1,68 @@
+# 📌 Product Sales Analysis III (LeetCode 1070)
+
+## 📝 Problem Description
+
+Write an SQL query to find the **first year** each product was sold.
+
+For every product, return:
+
+* `product_id`
+* `first_year` (the earliest year the product appeared in the `Sales` table)
+* `quantity` sold in that year
+* `price` of the product in that year
+
+The result can be returned in any order.
+
+---
+
+## 🎯 Concepts Used
+
+* Common Table Expressions (CTE)
+* `MIN()` Aggregate Function
+* `GROUP BY`
+* `INNER JOIN`
+* Filtering using multiple join conditions
+
+---
+
+## 💡 Approach
+
+1. Find the earliest (`MIN(year)`) year for each product using a CTE.
+2. Join the CTE with the `Sales` table on:
+
+   * `product_id`
+   * `year = first_year`
+3. Return the required columns: `product_id`, `first_year`, `quantity`, and `price`.
+
+---
+
+## 📚 Key Learning
+
+* Use `MIN()` with `GROUP BY` to identify the first occurrence of a value.
+* CTEs simplify complex queries by breaking them into smaller logical steps.
+* Joining on multiple columns helps retrieve the exact matching records.
+* This problem demonstrates how aggregation and joins work together to extract meaningful information.
+
+---
+
+## ⏱️ Complexity
+
+* **Time Complexity:** O(n)
+* **Space Complexity:** O(n) (for the CTE)
+
+
+## Solution
+
+with min_year as(
+    select product_id ,min(year) as first_year 
+    from sales 
+    group by product_id
+)
+select s.product_id,
+m.first_year ,
+s.quantity,
+s.price
+from sales s 
+join min_year m
+ON s.product_id = m.product_id
+AND s.year = m.first_year;
