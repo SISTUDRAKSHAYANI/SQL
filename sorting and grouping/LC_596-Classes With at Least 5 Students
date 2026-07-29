@@ -1,0 +1,30 @@
+## 📝 Problem Description
+
+The goal is to identify all classes that have **at least 5 students enrolled**.
+
+To solve this, group the records by `class`, count the number of students in each class, and return only those classes whose student count is **greater than or equal to 5**.
+
+### 💡 Key SQL Concepts
+
+* `GROUP BY`
+* `COUNT()`
+* `HAVING` clause
+* Aggregation
+
+### ⏱️ Time Complexity
+
+**O(n)**
+
+* `n` = Number of rows in the `Courses` table.
+* The query scans all records once, groups them by class, and counts the number of students in each group.
+
+### 💾 Space Complexity
+
+**O(k)**
+
+* `k` = Number of distinct classes.
+* Space is required to store the grouped results during aggregation.
+
+## Solution
+
+select class from courses group by class having count(*)>=5;
