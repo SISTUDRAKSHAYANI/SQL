@@ -1,0 +1,38 @@
+## 📝 Problem Description
+
+The objective is to find all customers who have purchased **every product** available in the `Product` table.
+
+Compare the number of **distinct products purchased by each customer** with the **total number of products**. If both counts are equal, the customer has bought all products and should be included in the result.
+
+### 💡 Key SQL Concepts
+
+* `COUNT(DISTINCT ...)`
+* `GROUP BY`
+* Subqueries
+* `HAVING` clause
+* Aggregation
+
+### ⏱️ Time Complexity
+
+**O(n + m)**
+
+* `n` = Number of rows in the `Customer` table.
+* `m` = Number of rows in the `Product` table.
+* The main query scans all customer purchases, while the subquery counts all products once.
+
+### 💾 Space Complexity
+
+**O(c)**
+
+* `c` = Number of distinct customers.
+* Space is required to store the grouped results during aggregation.
+
+### Solution 
+
+select 
+customer_id from customer
+ group by customer_id 
+ having count( distinct product_key)=
+(
+    select count(*) from product
+);
