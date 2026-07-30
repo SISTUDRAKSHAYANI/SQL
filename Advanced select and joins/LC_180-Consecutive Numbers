@@ -1,0 +1,52 @@
+## 📝 Problem Description
+
+The goal is to find all numbers that appear **at least three times consecutively** in the `Logs` table.
+
+A number is considered **consecutive** only if it appears in **three adjacent rows** based on the `id` order. Simply counting how many times a number appears is **not enough**, because the occurrences must be continuous.
+
+### 💡 Approach
+
+This solution uses **self joins** to compare adjacent rows in the `Logs` table.
+
+* Join the table with itself to compare the current row with the next row (`id + 1`).
+* Join the table a third time to compare with the following row (`id + 2`).
+* Ensure that all three rows contain the same `num` value.
+* Use `DISTINCT` to avoid returning duplicate numbers when a value appears more than three consecutive times.
+
+### 🔑 Key SQL Concepts
+
+* `SELF JOIN`
+* `JOIN` with multiple table aliases
+* `ON` clause with multiple conditions
+* Comparing consecutive rows using `id`
+* `DISTINCT`
+
+### Solution
+
+select 
+distinct l1.num as consecutivenums 
+from logs l1 
+join 
+logs l2 
+on l2.id=l1.id+1
+and l2.num=l1.num 
+join 
+logs l3 
+on l3.id=l2.id+1 
+
+OR
+
+# Write your MySQL query statement below
+
+select 
+distinct l1.num as consecutivenums 
+from logs l1 
+join 
+logs l2 
+on l2.id=l1.id+1
+and l2.num=l1.num 
+join 
+logs l3 
+on l3.id=l2.id+1 
+and l3.num=l2.num;
+and l3.num=l2.num;
