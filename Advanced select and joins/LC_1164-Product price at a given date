@@ -1,0 +1,77 @@
+# Product Price at a Given Date (LeetCode 1164)
+
+## Problem Summary
+
+Given a table containing product price changes over time, return the price of each product on a specified date (`2019-08-16`).
+
+* If a product has multiple price changes before or on the given date, return the **latest** price.
+* If a product has **no price changes** before the given date, its default price is **10**.
+
+## Approach
+
+1. Filter all price changes that occurred on or before the given date.
+2. Use `MAX(change_date)` with `GROUP BY product_id` to find the latest price change for each product.
+3. Create a list of all distinct products.
+4. Use `LEFT JOIN` to include products that have no price changes before the given date.
+5. Join back to the `Products` table to retrieve the corresponding `new_price`.
+6. Use `IFNULL()` to assign the default price of **10** when no matching price record exists.
+
+## SQL Concepts Used
+
+* Common Table Expression (CTE) – `WITH`
+* `GROUP BY`
+* Aggregate Function – `MAX()`
+* `LEFT JOIN`
+* `IFNULL()`
+* `DISTINCT`
+
+## Time Complexity
+
+* **O(n)**
+
+## Key Learning
+
+The main challenge is handling products that do not have any price updates before the given date. Using a CTE to identify the latest valid price change and `LEFT JOIN` with `IFNULL()` ensures every product is returned with the correct price.
+
+
+## Solution
+
+with  new as(
+    SELECT
+    product_id,
+    MAX(change_date) as change_date
+FROM Products
+WHERE change_date <= '2019-08-16'
+GROUP BY product_id
+)
+select 
+p.product_id,
+ifnull(pr.new_price,10) as price 
+ FROM (
+    SELECT DISTINCT product_id
+    FROM Products
+) AS  p 
+left join new n 
+on n.product_id=p.product_id 
+left join
+products pr 
+on p.product_id=pr.product_id
+and n.change_date=pr.change_date ;
+
+or
+
+select d.product_id,
+ifnull(pr.new_price,10) as price
+from (
+    SELECT DISTINCT product_id
+FROM Products
+) as d left join 
+(select 
+product_id,
+max(change_date) as date 
+from products 
+WHERE change_date <= '2019-08-16'
+GROUP BY product_id) as p on d.product_id=p.product_id
+left join
+products pr 
+on pr.product_id=p.product_id and pr.change_date=p.date;
