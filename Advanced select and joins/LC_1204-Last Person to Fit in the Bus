@@ -1,0 +1,33 @@
+# 🚌 Last Person to Fit in the Bus
+
+## Approach
+
+* Calculated the **cumulative (running) weight** of passengers in the order they entered the queue using the `SUM() OVER (ORDER BY turn)` window function.
+* Filtered the passengers whose cumulative weight did not exceed the bus capacity (`1000` kg).
+* Sorted the remaining passengers by `turn` in descending order and selected the last valid passenger using `LIMIT 1`.
+
+## SQL Concepts Used
+
+* Common Table Expression (CTE)
+* Window Function: `SUM() OVER (ORDER BY ...)`
+* Filtering with `WHERE`
+* Sorting with `ORDER BY`
+* `LIMIT` to retrieve the final result
+
+## Time Complexity
+
+* **O(n log n)** (due to ordering)
+* **Space Complexity:** O(n) for the CTE/result set
+
+
+## solution
+
+with q as(
+    select 
+    person_name,
+    sum(weight) over(order by turn) as cw,
+    turn
+    from queue 
+)
+
+select person_name from q where cw<=1000 order by turn desc limit 1;
