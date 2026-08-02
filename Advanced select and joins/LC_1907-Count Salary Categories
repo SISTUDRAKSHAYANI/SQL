@@ -1,0 +1,29 @@
+## Count Salary Categories – LeetCode
+
+### Approach
+- Used `CASE` statements to classify each account into a salary category:
+  - **Low Salary**: income < 20000
+  - **Average Salary**: income between 20000 and 50000 (inclusive)
+  - **High Salary**: income > 50000
+- Counted the number of accounts in each category using `COUNT()`.
+- Ensured all three categories are included in the output, even if a category has zero accounts.
+
+### Concepts Used
+- CASE Expression
+- COUNT() Aggregate Function
+- GROUP BY
+- Common Table Expressions (CTEs) / UNION (depending on the solution)
+
+### Time Complexity
+- **O(n)** – Single scan of the `Accounts` table.
+
+### Space Complexity
+- **O(1)** – Only stores the three salary categories.
+
+### Solution
+
+select 'Low Salary' as category ,sum(if(income<20000,1,0)) as accounts_count from Accounts
+union
+select 'Average Salary' as category,sum(if(income>=20000 and income<=50000,1,0)) as accounts_count from Accounts
+union
+select 'High Salary' as category,sum(if(income>50000,1,0)) as accounts_count from Accounts
