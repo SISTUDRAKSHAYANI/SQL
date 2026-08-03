@@ -1,0 +1,55 @@
+## 💡 Approach
+
+* The goal is to swap the seat IDs of every pair of adjacent students.
+* If the `id` is **even**, it should be swapped with the previous seat (`id - 1`).
+* If the `id` is **odd**, it should be swapped with the next seat (`id + 1`).
+* The only exception is when the last student has an odd `id` (i.e., there is no next student). In that case, the `id` remains unchanged.
+* A `CASE` expression is used to calculate the new seat ID for each student.
+* A subquery with `MAX(id)` identifies the last seat to handle the edge case.
+* Finally, the result is ordered by the newly calculated `id` to display the students in the correct swapped order.
+
+### ⏱️ Complexity
+
+* **Time Complexity:** O(n)
+* **Space Complexity:** O(1)
+
+## 📌 CASE Statement Syntax
+
+```sql
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    ...
+    ELSE default_result
+END
+```
+
+### Explanation
+
+* `CASE` starts the conditional expression.
+* Each `WHEN` specifies a condition to check.
+* `THEN` returns the value if the corresponding condition is true.
+* `ELSE` returns a default value if none of the `WHEN` conditions are satisfied.
+* `END` marks the end of the `CASE` expression.
+
+### Example
+
+```sql
+SELECT
+    CASE
+        WHEN salary >= 100000 THEN 'High'
+        WHEN salary >= 50000 THEN 'Medium'
+        ELSE 'Low'
+    END AS salary_category
+FROM Employee;
+```
+
+### Solution
+
+select 
+       case
+            when id%2=0 then id-1
+            when id=(select max(id) from seat) and id%2=1 then id
+            else id+1
+        END as  id,
+        student from seat order by id;
