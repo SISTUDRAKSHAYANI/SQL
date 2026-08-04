@@ -1,0 +1,60 @@
+
+
+# 🎬 Movie Rating (LeetCode 1341)
+
+## 📝 Problem Summary
+
+Given three tables: **Users**, **Movies**, and **MovieRating**, write an SQL query to:
+
+1. Find the **name of the user** who has submitted the **highest number of movie reviews**.
+
+   * If multiple users have the same number of reviews, return the **lexicographically smallest name**.
+
+2. Find the **title of the movie** with the **highest average rating** during **February 2020**.
+
+   * If multiple movies have the same average rating, return the **lexicographically smallest title**.
+
+Return both results as two separate rows.
+
+---
+
+## 💡 Approach
+
+* Joined the **Users** table with **MovieRating** to count the number of reviews submitted by each user.
+* Grouped users by `user_id` and `name`, then sorted by review count (descending) and name (ascending) to handle tie-breaking.
+* Joined the **Movies** table with **MovieRating** to calculate the average movie rating.
+* Filtered ratings to include only those from **February 2020** using the `WHERE` clause.
+* Grouped movies by `movie_id` and `title`, then sorted by average rating (descending) and title (ascending).
+* Combined the two independent query results using `UNION ALL`.
+
+---
+
+## 📚 SQL Concepts Used
+
+* `INNER JOIN`
+* `GROUP BY`
+* `COUNT()`
+* `AVG()`
+* `WHERE`
+* `ORDER BY`
+* `LIMIT`
+* `UNION ALL`
+
+---
+
+## 🎯 Key Learning
+
+* Use **`WHERE`** to filter individual rows before grouping.
+* Use **`GROUP BY`** to create groups for aggregation.
+* Use **`HAVING`** when filtering based on aggregate functions.
+* Use **multiple columns in `ORDER BY`** to handle tie-breaking.
+* Use **`UNION ALL`** to combine independent query results while preserving both rows.
+
+---
+### Solution
+
+(select  u.name as results from users u join movierating mr on u.user_id=mr.user_id group by u.user_id,u.name order by count(*) desc,u.name asc limit 1)
+union all
+(
+    select m.title as results from movies m join movierating mr on m.movie_id=mr.movie_id where mr.created_at between '2020-02-01' and '2020-02-29' group by m.movie_id,m.title order by avg(mr.rating) desc,m.title asc limit 1
+)
