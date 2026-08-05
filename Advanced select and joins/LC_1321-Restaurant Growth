@@ -1,0 +1,52 @@
+## Approach
+
+1. Since there can be multiple customers on the same `visited_on` date, I first aggregate the data using `GROUP BY visited_on` and calculate the total amount spent on each day.
+2. Using the aggregated daily data, I apply window functions to compute:
+
+   * **7-day rolling sum** using `SUM() OVER (ORDER BY visited_on ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)`.
+   * **7-day rolling average** using `AVG() OVER (ORDER BY visited_on ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)`.
+3. I use `ROW_NUMBER()` to assign a sequential number to each day so that I can exclude the first six days, which do not have a complete 7-day window.
+4. Finally, I return only the required columns (`visited_on`, `amount`, and `average_amount`) for rows where `rn >= 7`, ordered by `visited_on` in ascending order.
+
+### Key Concepts Used
+
+* Common Table Expressions (CTEs)
+* `GROUP BY` aggregation
+* Window Functions
+* Rolling Sum
+* Rolling Average
+* `ROW_NUMBER()`
+
+## Solution
+
+# here we have to find avg of amount for previous 6 days + today and we have to return  visited_on and total amount,avg amount ordered by visited_on in ascending order `
+# this cte is used to combine rows with same visited days
+with c as(
+    SELECT
+    visited_on,
+    SUM(amount) AS amount
+FROM Customer
+GROUP BY visited_on
+),
+
+# this is cte is used to calcualte the sum and avg of amount and to use window function row_number()
+
+ans as(
+select 
+visited_on,
+sum(amount) over (order by visited_on rows between  6 preceding and current row) as amount,
+round(avg(amount) over (order by visited_on rows between 6 preceding and current row ),2) as average_amount,
+row_number() over (order by visited_on) as rn
+from
+c 
+)
+
+# this is the final query
+
+select 
+visited_on,
+amount,
+average_amount
+ from ans 
+ where rn >= 7
+ order by visited_on;
