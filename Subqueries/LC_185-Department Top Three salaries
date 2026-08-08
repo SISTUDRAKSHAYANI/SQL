@@ -1,0 +1,37 @@
+### Approach
+
+* We need to find the employees who have the **top 3 highest distinct salaries in each department**.
+* First, we use `DENSE_RANK()` to rank employees based on their salary.
+* `PARTITION BY departmentId` makes the ranking restart for each department.
+* `ORDER BY salary DESC` gives the highest salary rank `1`.
+* `DENSE_RANK()` assigns the same rank to employees with the same salary and does not leave gaps between ranks.
+* We use a **CTE** to store the ranked result because we cannot directly filter a window function using `WHERE` in the same query.
+* Finally, we filter `rk <= 3` to get the top 3 distinct salaries and join with the `Department` table to display the department name.
+
+### Complexity
+
+* **Time Complexity:** `O(n log n)` due to sorting for the window function.
+* **Space Complexity:** `O(n)` for storing the ranked result.
+
+##Solution
+
+WITH ranked AS (
+    SELECT
+        name,
+        salary,
+        departmentId,
+        DENSE_RANK() OVER (
+            PARTITION BY departmentId
+            ORDER BY salary DESC
+        ) AS rk
+    FROM employee
+)
+
+SELECT
+    d.name AS Department,
+    r.name AS Employee,
+    r.salary AS Salary
+FROM ranked r
+JOIN department d
+    ON r.departmentId = d.id
+WHERE r.rk <= 3;
