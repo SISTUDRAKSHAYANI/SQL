@@ -1,0 +1,53 @@
+# Friends With the Most Friends
+
+## Problem
+
+Find the person who has the highest number of friends from the `RequestAccepted` table. A friendship contributes to the friend count of both the requester and the accepter.
+
+## Approach
+
+* Each accepted friendship involves two people: `requester_id` and `accepter_id`.
+* To count every person's total friends, combine both columns into a single column using `UNION ALL`.
+* `UNION ALL` is used instead of `UNION` because duplicate IDs represent multiple accepted friendships and should not be removed.
+* After combining the IDs, group them using `GROUP BY id`.
+* Use `COUNT(*)` to count how many times each person appears.
+* Sort the result in descending order of the friend count and return the top record using `LIMIT 1`.
+
+## Key SQL Concepts Used
+
+* Common Table Expression (CTE)
+* `UNION ALL`
+* `GROUP BY`
+* `COUNT(*)`
+* `ORDER BY`
+* `LIMIT`
+
+## Time Complexity
+
+* **O(n)**, where **n** is the number of rows in the `RequestAccepted` table. The table is scanned twice to collect all IDs and once to group and count them.
+
+## Space Complexity
+
+* **O(n)** for storing the combined IDs before aggregation.
+
+## Solution 
+
+#Approach:
+#Each accepted friendship involves two people: the requester_id and the accepter_id.
+#To count the total number of friends for each person, combine both columns into a single column using UNION ALL.
+#UNION ALL is used instead of UNION because duplicate IDs represent multiple friendships and should not be removed.
+#Group the combined IDs using GROUP BY id and count the occurrences using COUNT(*).
+#Finally, sort the counts in descending order and return the top result using LIMIT 1.
+
+SELECT
+    id,
+    COUNT(*) AS num
+FROM (
+    SELECT requester_id AS id FROM RequestAccepted
+    UNION ALL
+    SELECT accepter_id AS id FROM RequestAccepted
+) AS a
+GROUP BY id
+ORDER BY num DESC
+LIMIT 1;
+
