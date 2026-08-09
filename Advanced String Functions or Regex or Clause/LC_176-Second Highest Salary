@@ -1,0 +1,46 @@
+### Second Highest Salary
+
+**Problem Description:**
+
+Find the **second highest distinct salary** from the `Employee` table.
+
+If there is no second highest salary, return `NULL`.
+
+**Approach:**
+
+* First, find the highest salary using `MAX()`.
+* Exclude the highest salary using `WHERE salary NOT IN (...)`.
+* Find the maximum salary among the remaining values.
+* The outer `MAX()` ensures that the query returns `NULL` when no second highest salary exists.
+
+**Key Concepts:**
+
+* `MAX()`
+* Subqueries
+* `WHERE NOT IN`
+* Handling `NULL`
+* Finding the second highest distinct value
+
+## Solution
+
+select max(salary) as SecondHighestSalary from employee where salary not in (select max(salary) from employee);
+
+or
+
+SELECT (
+    SELECT DISTINCT salary
+    FROM Employee
+    ORDER BY salary DESC
+    LIMIT 1 OFFSET 1
+) AS SecondHighestSalary;
+
+or
+
+
+WITH ranked AS (
+    SELECT DISTINCT salary,
+           DENSE_RANK() OVER (ORDER BY salary DESC) AS rk
+    FROM Employee
+)
+SELECT MAX(CASE WHEN rk = 2 THEN salary END) AS SecondHighestSalary
+FROM ranked;
