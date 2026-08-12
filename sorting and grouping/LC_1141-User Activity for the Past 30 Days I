@@ -1,0 +1,14 @@
+**Problem Description:**
+Write a SQL query to find the number of active users for each day during the 30-day period ending on **2019-07-27**. A user is considered active on a day if they performed at least one activity on that day.
+
+The result should contain the activity date and the number of unique active users for that date.
+
+**Key Concepts:** `COUNT(DISTINCT)`, `GROUP BY`, `WHERE`, date filtering
+
+## Solution
+
+# Write your MySQL query statement below
+SELECT activity_date AS day, COUNT(DISTINCT user_id) AS active_users
+FROM Activity
+WHERE activity_date > '2019-06-27' AND activity_date <= '2019-07-27'
+GROUP BY activity_date;
