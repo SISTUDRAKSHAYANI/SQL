@@ -1,0 +1,36 @@
+### Problem Description
+
+You are given a table named `Followers` that contains information about users and the users who follow them.
+
+Each row represents a follower relationship:
+
+* `user_id` represents the user being followed.
+* `follower_id` represents the user who follows them.
+
+The task is to find the **total number of followers for each user**.
+
+The output should contain:
+
+* `user_id` – the ID of the user.
+* `followers_count` – the total number of followers that the user has.
+
+The result should be sorted by `user_id` in **ascending order**.
+
+### Approach
+
+1. Group the records based on `user_id` so that all followers of the same user are considered together.
+2. Use `COUNT()` to calculate the number of followers for each user.
+3. Use `ORDER BY` to sort the final result by `user_id` in ascending order.
+
+### SQL Concepts Used
+
+* `GROUP BY` – groups followers belonging to the same user.
+* `COUNT()` – counts the number of followers.
+* `ORDER BY` – sorts the result by user ID.
+
+## Solution
+
+SELECT user_id, COUNT(follower_id) AS followers_count
+FROM Followers
+GROUP BY user_id
+ORDER BY user_id ASC;
