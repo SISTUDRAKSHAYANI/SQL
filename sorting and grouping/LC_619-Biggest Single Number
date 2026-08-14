@@ -1,0 +1,32 @@
+### Problem Description
+
+You are given a table named `MyNumbers` that contains a column `num`. The table may contain duplicate numbers.
+
+The task is to find the **largest number that appears exactly once** in the table.
+
+If there is no number that appears only once, return `NULL`.
+
+### Approach
+
+1. Group the records by `num` using `GROUP BY`.
+2. Use `COUNT()` to determine how many times each number appears.
+3. Filter the groups so that only numbers appearing **exactly once** are considered.
+4. Among those unique numbers, find the **maximum** value.
+5. If there are no unique numbers, `MAX()` returns `NULL`.
+
+### SQL Concepts Used
+
+* `GROUP BY` – groups identical numbers together.
+* `COUNT()` – counts how many times each number occurs.
+* `HAVING` – filters numbers based on their occurrence count.
+* `MAX()` – finds the largest number among the unique numbers.
+
+##Solution
+
+# Write your MySQL query statement below
+SELECT MAX(num) AS num FROM 
+(
+    SELECT num FROM MyNumbers
+    GROUP BY num
+    HAVING COUNT(*)=1
+) AS t
