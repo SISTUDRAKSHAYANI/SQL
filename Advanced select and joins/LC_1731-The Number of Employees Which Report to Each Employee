@@ -1,0 +1,59 @@
+### Problem Description
+
+You are given a table named `Employees` that contains information about employees and their managers.
+
+Each employee has:
+
+* `employee_id` – the unique ID of the employee.
+* `name` – the employee's name.
+* `reports_to` – the ID of the manager the employee reports to.
+* `age` – the employee's age.
+
+The task is to find all employees who have **at least one other employee reporting directly to them**.
+
+For each such manager, return:
+
+* `employee_id` – the manager's ID.
+* `name` – the manager's name.
+* `reports_count` – the total number of employees directly reporting to that manager.
+* `average_age` – the average age of the employees who report directly to that manager, rounded to the nearest integer.
+
+The result should be ordered by `employee_id` in **ascending order**.
+
+### Approach
+
+1. Join the `Employees` table with itself to match each employee with their manager.
+2. Use the manager's `employee_id` to group all employees reporting to the same manager.
+3. Use `COUNT()` to calculate the number of employees reporting to each manager.
+4. Use `AVG()` to calculate the average age of the employees reporting to each manager.
+5. Use `ROUND()` to round the average age to the nearest integer.
+6. Sort the final result by `employee_id` in ascending order.
+
+### SQL Concepts Used
+
+* **Self Join** – used to connect employees with their managers within the same table.
+* **INNER JOIN** – matches employees with the employee they report to.
+* **COUNT()** – counts the number of direct reports for each manager.
+* **AVG()** – calculates the average age of the direct reports.
+* **ROUND()** – rounds the calculated average age.
+* **GROUP BY** – groups employees according to their manager.
+* **ORDER BY** – sorts the final result by employee ID.
+
+
+##Solution
+
+# Write your MySQL query statement below
+SELECT 
+    m.employee_id, 
+    m.name, 
+    COUNT(e.employee_id) AS reports_count, 
+    ROUND(AVG(e.age)) AS average_age
+FROM Employees m
+JOIN Employees e 
+    ON m.employee_id = e.reports_to
+GROUP BY 
+    m.employee_id, 
+    m.name
+ORDER BY 
+    m.employee_id;
+
