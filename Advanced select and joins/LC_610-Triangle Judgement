@@ -1,0 +1,36 @@
+## LeetCode 610 – Triangle Judgement
+
+### Approach
+
+To determine whether three side lengths can form a triangle, we use the **Triangle Inequality Theorem**.
+
+For three sides `a`, `b`, and `c`, they form a valid triangle only if:
+
+* `a + b > c`
+* `a + c > b`
+* `b + c > a`
+
+If all three conditions are satisfied, return `"Yes"`; otherwise, return `"No"`.
+
+### Key Concept
+
+The sum of any two sides of a triangle must be **strictly greater** than the third side.
+
+### SQL Pattern
+
+This problem mainly uses:
+
+* `CASE WHEN`
+* Arithmetic conditions
+* Conditional classification
+
+### Complexity
+
+* **Time:** `O(n)`
+* **Space:** `O(1)`
+
+## Solution
+
+SELECT *, 
+       IF(x + y > z AND x + z > y AND y + z > x, 'Yes', 'No') AS triangle 
+FROM Triangle;
