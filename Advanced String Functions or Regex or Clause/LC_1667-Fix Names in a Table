@@ -1,0 +1,17 @@
+# LeetCode 1667 — Fix Names in a Table
+
+**Problem:** Fix the capitalization of names so that the first character is uppercase and the remaining characters are lowercase.
+
+### Approach
+
+* Use `UPPER()` to capitalize the first character.
+* Use `LOWER()` to convert the remaining characters to lowercase.
+* Use `SUBSTRING()` to extract the remaining characters.
+* Sort the result by `user_id`.
+
+### SQL Solution
+
+select 
+user_id,
+concat(upper(substring(name,1,1)),lower(substring(name,2))) as name 
+from users order by user_id;
