@@ -1,0 +1,39 @@
+-- LeetCode 1527: Patients With a Condition
+-- Difficulty: Easy
+-- Topic: SQL, LIKE, Pattern Matching
+--
+-- Approach:
+-- We need to find patients whose conditions contain a condition
+-- that starts with "DIAB1".
+--
+-- The condition can occur in two places:
+--
+-- 1. At the beginning of the conditions string:
+--    Example: "DIAB100 MYOP"
+--    Pattern: 'DIAB1%'
+--
+-- 2. After a space, when another condition comes before it:
+--    Example: "ACNE DIAB100"
+--    Pattern: '% DIAB1%'
+--
+-- We use the LIKE operator with the '%' wildcard to perform
+-- pattern matching.
+--
+-- The space before DIAB1 in '% DIAB1%' is important because
+-- it ensures that DIAB1 represents a separate condition
+-- rather than being part of another word.
+--
+-- Key Concepts:
+-- - WHERE clause for filtering rows
+-- - LIKE operator for pattern matching
+-- - '%' wildcard for matching any number of characters
+-- - Handling a pattern at the beginning and after a space
+--
+-- Time Complexity:
+-- O(n * m), where n is the number of patients and m is the
+-- length of the conditions string.
+
+
+## Solution
+
+select * from patients where conditions like '% DIAB1%' or conditions like 'DIAB1%';
