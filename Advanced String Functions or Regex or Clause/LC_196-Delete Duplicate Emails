@@ -1,0 +1,73 @@
+## Problem 196 — Delete Duplicate Emails
+
+### Problem Description
+
+You are given a `Person` table containing two columns:
+
+- `id` — the unique identifier of each person.
+- `email` — the person's email address.
+
+The table may contain multiple records with the same email address. These are considered duplicate email records.
+
+The task is to remove all duplicate records while keeping **only one record for each unique email address**.
+
+When multiple records have the same email, the record with the **smallest `id`** must be kept, and all other records with the same email should be deleted.
+
+### Example
+
+Suppose the table contains:
+
+| id | email |
+|----|-------|
+| 1  | a@abc.com |
+| 2  | b@abc.com |
+| 3  | a@abc.com |
+
+Here, `a@abc.com` appears twice.
+
+Since `id = 1` is smaller than `id = 3`, we keep the record with `id = 1` and delete the record with `id = 3`.
+
+The resulting table will be:
+
+| id | email |
+|----|-------|
+| 1  | a@abc.com |
+| 2  | b@abc.com |
+
+### Approach
+
+We can solve this problem using a **Self Join**.
+
+We treat the `Person` table as two different tables:
+
+- `p1` represents the record that may need to be deleted.
+- `p2` represents another record with the same email.
+
+We join the two records when:
+
+1. Both records have the same email.
+2. `p1.id > p2.id`.
+
+This means that `p1` is a duplicate record whose `id` is greater than another record having the same email.
+
+Therefore, `p1` can safely be deleted because the record with the smaller `id` (`p2`) will remain.
+
+### Key SQL Concept
+
+**Self Join + DELETE**
+The important condition is:
+
+`p1.email = p2.email AND p1.id > p2.id`
+
+This ensures that for every duplicate email, only the record with the smallest `id` is preserved.
+
+## Solution
+
+DELETE FROM Person 
+WHERE id NOT IN (
+    SELECT min_id FROM (
+        SELECT MIN(id) AS min_id 
+        FROM Person 
+        GROUP BY email
+    ) AS temp
+);
