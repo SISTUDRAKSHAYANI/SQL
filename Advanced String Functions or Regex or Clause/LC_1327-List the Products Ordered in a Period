@@ -1,0 +1,69 @@
+## Problem Description
+
+You are given two tables: `Products` and `Orders`.
+
+The `Products` table contains information about products, including their name and price.
+
+The `Orders` table contains information about orders, including the product ID, order date, and number of units ordered.
+
+Write a SQL query to find the names of products that had **at least 100 units ordered in February 2020**.
+
+For each qualifying product, return:
+
+* `product_name`
+* `unit`
+
+The result can be returned in any order.
+
+### Example
+
+**Input:**
+
+```text
+Products:
++------------+--------------+
+| product_id | product_name |
++------------+--------------+
+| 1          | Leetcode     |
+| 2          | Jewels       |
+| 3          | Baskets      |
++------------+--------------+
+
+Orders:
++--------------+------------+------------+
+| product_id   | order_date | unit       |
++--------------+------------+------------+
+| 1            | 2020-02-05 | 60         |
+| 1            | 2020-02-10 | 40         |
+| 2            | 2020-02-15 | 50         |
+| 3            | 2020-02-20 | 100        |
++--------------+------------+------------+
+```
+
+**Output:**
+
+```text
++--------------+------+
+| product_name | unit |
++--------------+------+
+| Leetcode     | 100  |
+| Baskets      | 100  |
++--------------+------+
+```
+
+### Key SQL Concepts
+
+* `INNER JOIN`
+* Filtering dates using `WHERE`
+* `GROUP BY`
+* `SUM()`
+* `HAVING`
+
+### Solution
+
+SELECT p.product_name, SUM(o.unit) AS unit
+FROM Products p
+JOIN Orders o ON p.product_id = o.product_id
+WHERE o.order_date >= '2020-02-01' AND o.order_date <= '2020-02-29'
+GROUP BY p.product_id, p.product_name
+HAVING SUM(o.unit) >= 100;
